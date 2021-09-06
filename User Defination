@@ -1,0 +1,81 @@
+package Data;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class UserDefinetion {
+    public String Name;
+    public String BlockNumber;
+    public int RoomNumber;
+    public String PhoneNumber;
+    public int age;
+    public Address Address;
+    public String Password;
+
+    public String getPassword(String Name, String BlocKNumber, String roomNumber, String  PhoneNumber){
+        Random random = new Random();
+        String  GeneratedPassword = Name.subSequence(0,3)+""
+                +BlocKNumber.charAt(2)+""
+                +roomNumber.codePoints().mapToObj(c -> (char) c).skip(random.nextInt(roomNumber.length())).findFirst().get()+""
+                +PhoneNumber.subSequence(7,10);
+        Stream<Character> PasswordStream =
+                 GeneratedPassword.codePoints().mapToObj(c -> (char) c);
+        List<Character> PasswordList = PasswordStream.collect(Collectors.toList());
+        Collections.shuffle(PasswordList);
+        String Password = PasswordList.stream()
+                .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+                .toString();
+        return Password;
+    }
+
+    public UserDefinetion(String Name, int age, String BlockNumber, int roomNumber, String phoneNumber, Address address) {
+        this.Name = Name;
+        this.age = age;
+        this.BlockNumber = BlockNumber;
+        this.RoomNumber = roomNumber;
+        this.PhoneNumber = phoneNumber;
+        this.Address = address;
+        this.Password = getPassword(Name,BlockNumber,""+roomNumber,phoneNumber);
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public int getRoomNumber() {
+        return RoomNumber;
+    }
+
+    public Address getAddress() {
+        return Address;
+    }
+
+    public String getPhoneNumber() {
+        return PhoneNumber;
+    }
+
+    public String FullAddress() {
+
+        return new StringBuilder().append("No. ")
+                .append(RoomNumber+",").append("Block "+BlockNumber).append(", ").append(Name).append(", ")
+                .append(Address.getZip()).toString();
+    }
+
+}
+class Address{
+    private String Place;
+    private String city;
+    private String ZipCode;
+    public Address(String Place,String city,String ZipCode){
+        this.Place = Place;
+        this.city =  city;
+        this.ZipCode = ZipCode;
+    }
+
+    public String getZip() {
+        return ""+Place+" ,"+city+" ,"+ZipCode+".";
+    }
+}
