@@ -1,0 +1,36 @@
+package Main;
+
+import Data.User;
+import Data.UserDefinetion;
+
+import java.util.List;
+import java.util.Scanner;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
+
+public class Login {
+    static Scanner inputs = new Scanner(System.in);
+    static String PhoneNumber;
+    static List<UserDefinetion> test = User.getUser();
+    static Boolean userState = false;
+    static UserDefinetion UserData;
+    public static UserDefinetion getUser(String input){
+        BiPredicate<String,UserDefinetion> checkPassword = (Password,Data) -> Data.Password.equals(Password);
+        BiPredicate<String,UserDefinetion> checkNumber = (Number,Data) -> Data.PhoneNumber.equals(Number);
+        BiFunction<String,UserDefinetion,Boolean> state = (phoneNumber,Data)-> checkNumber.test(phoneNumber,Data) && checkPassword.test(inputs.nextLine(),Data);
+        test.forEach(itr ->{
+            System.out.println("PassWord: "+itr.Password);
+            if(state.apply(input,itr)){
+                UserData = itr;
+            }
+        });
+        System.out.println("Login Successfully");
+        return UserData;
+    }
+    public static void main(String[] args) {
+        System.out.println(getUser("8072011083").Name);
+    }
+
+
+
+}
