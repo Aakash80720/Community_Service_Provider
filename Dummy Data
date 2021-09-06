@@ -1,0 +1,19 @@
+package Data;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class User{
+   static UserDefinetion user = new UserDefinetion(
+            "Aakash",20,"12A",115,"8072011083",
+            new Address("Little Graden","Karur","639001")
+    );
+   static UserDefinetion user1 = new UserDefinetion(
+            "Akash",20,"12A",115,"8072011082",
+            new Address("Little Graden","Karur","639001")
+    );
+
+    public static List<UserDefinetion> getUser() {
+        return Arrays.asList(user,user1);
+    }
+}
