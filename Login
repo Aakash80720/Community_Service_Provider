@@ -2,33 +2,66 @@ package Main;
 
 import Data.User;
 import Data.UserDefinetion;
-
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 public class Login {
     static Scanner inputs = new Scanner(System.in);
-    static String PhoneNumber;
     static List<UserDefinetion> test = User.getUser();
-    static Boolean userState = false;
     static UserDefinetion UserData;
+    static BiPredicate<String,UserDefinetion> checkNumber = (Number,Data) -> Data.PhoneNumber.equals(Number);
     public static UserDefinetion getUser(String input){
-        BiPredicate<String,UserDefinetion> checkPassword = (Password,Data) -> Data.Password.equals(Password);
-        BiPredicate<String,UserDefinetion> checkNumber = (Number,Data) -> Data.PhoneNumber.equals(Number);
-        BiFunction<String,UserDefinetion,Boolean> state = (phoneNumber,Data)-> checkNumber.test(phoneNumber,Data) && checkPassword.test(inputs.nextLine(),Data);
+        var ref = new Object() {
+            String pwd;
+            int n;
+        };
+        Predicate<UserDefinetion> checkPassword = (Data) -> {
+            ref.n = 4;
+            while (ref.n > 0){
+                System.out.print("Enter your OTP that Provided : ");
+                ref.pwd = inputs.nextLine();
+                if(!Data.Password.equals(ref.pwd)) System.out.println("Incorrect Password ! \n Submission left : "+--ref.n);
+                else break;
+            }
+            return Data.Password.equals(ref.pwd);
+        };
+        BiFunction<String,UserDefinetion,Boolean> state = (phoneNumber,Data)-> {
+
+            if(checkNumber.test(phoneNumber,Data)) {
+                System.out.println("PassWord: "+Data.Password);
+            }
+          return checkNumber.test(phoneNumber,Data) && checkPassword.test(Data);
+        };
         test.forEach(itr ->{
-            System.out.println("PassWord: "+itr.Password);
             if(state.apply(input,itr)){
                 UserData = itr;
+                System.out.println("Login Successfully");
             }
         });
-        System.out.println("Login Successfully");
         return UserData;
     }
     public static void main(String[] args) {
-        System.out.println(getUser("8072011083").Name);
+        try {
+            System.out.println("Welcome");
+            System.out.println("_____________________________________\n");
+            System.out.println("Login");
+            System.out.println("_____________________________________\n");
+            System.out.print("Enter Phone Number : ");
+            String LoginPhoneNumber = inputs.nextLine();
+            UserDefinetion User = getUser(LoginPhoneNumber);
+            System.out.println("\nUser Name: "+User.Name);
+            System.out.println("_____________________________________\n");
+            System.out.println("Details : "+User.FullAddress());
+
+        }
+        catch (Exception e){
+            System.out.println("Invalid user credential");
+        }
+
+
     }
 
 
