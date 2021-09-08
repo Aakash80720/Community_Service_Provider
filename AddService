@@ -1,0 +1,32 @@
+package Services;
+
+import java.util.*;
+
+public class Services {
+    static Map<Object, List<Object>> ServersList = new HashMap<>();
+    static Scanner input = new Scanner(System.in);
+    public static void main(String[] args) {
+        ServicesDefination service = new ServicesDefination();
+        String Domin;
+        String check = "YES";
+        while(check.toUpperCase(Locale.ROOT).equals("YES")) {
+                System.out.println("Enter Service Domin :");
+                Domin = input.nextLine();
+                service.setServiceDomin(Domin);
+                System.out.println("Enter Service Description :");
+                service.setDescription(input.nextLine());
+                System.out.println("\nEnter \n 1.Agency Name \n2.Service Name \n3.Service Provider Name :");
+                service.setServiceType(input.nextLine(), input.nextLine(), input.nextLine());
+                if(ServersList.get(service.getServiceDomin()) == null){
+                    ServersList.put(service.getServiceDomin(),new ArrayList<Object>());
+                    ServersList.get(service.getServiceDomin()).add(service);
+                }
+                else ServersList.get(service.getServiceDomin()).add(service);
+                System.out.println("Enter YES to Add more services or Enter NO to Exit from this Process:");
+                check = input.nextLine();
+
+        }
+        System.out.println(ServersList);
+
+    }
+}
