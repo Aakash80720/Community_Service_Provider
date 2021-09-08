@@ -1,6 +1,8 @@
 package Services;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -35,10 +37,14 @@ public class ServicesDefination {
         ServiceType = new ServiceType(AgencyName,ServiceName,ServiceProviderName);
     }
 
+    public List<Object> GetService(){
+        return Arrays.asList(getServiceDomin(),getServiceTypeList());
+    }
 
     public Map<String, Map<String, String>> getServiceTypeList() {
         Map<String, String> ServiceData = new HashMap<>();
         ServiceData.put("Agency Name :", ServiceType.AgencyName);
+        ServiceData.put("Description :",getDescription());
         ServiceData.put("Service Person Name :", ServiceType.ServiceProviderName);
         ServiceTypeList.put(ServiceType.ServiceName,ServiceData);
         return ServiceTypeList;
@@ -48,7 +54,7 @@ class ServiceType{
     public String ServiceName;
     public String AgencyName;
     public String ServiceProviderName;
-    public ServiceType(String ServiceName,String AgencyName,String ServiceProviderName){
+    public ServiceType(String AgencyName,String ServiceName,String ServiceProviderName){
         this.ServiceName = ServiceName;
         this.AgencyName = AgencyName;
         this.ServiceProviderName = ServiceProviderName;
